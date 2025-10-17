@@ -1,0 +1,8 @@
+text,category
+"I can't login to my account",Account Issue
+"My internet connection is very slow",Network Issue
+"Please help me reset my password",Account Issue
+"I was overcharged on my last bill",Billing Issue
+"The app keeps crashing when I open it",Technical Issue
+"My payment failed but the amount was deducted",Billing Issue
+"Unable to send messages through the app",Technical Issue
