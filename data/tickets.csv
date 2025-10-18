@@ -6,3 +6,22 @@ text,category
 "The app keeps crashing when I open it",Technical Issue
 "My payment failed but the amount was deducted",Billing Issue
 "Unable to send messages through the app",Technical Issue
+"Payment failed while purchasing plan",Billing Issue
+"Charged twice for one order",Billing Issue
+"Money deducted but order not placed",Billing Issue
+"Can't log in to my account",Account Issue
+"Password reset link not working",Account Issue
+"Forgot my password",Account Issue
+"Internet not working",Network Issue
+"Slow internet speed",Network Issue
+"WiFi disconnects frequently",Network Issue
+"App crashes after update",Technical Issue
+"App not opening",Technical Issue
+"Application freezes during use",Technical Issue
+"I can’t access my account", Account Issue
+"Password reset not working", Account Issue
+"Forgot my login credentials", Account Issue
+"My account got locked", Account Issue
+"I can’t sign in even after reset", Account Issue
+"computer can't working properly", Technical Issue
+

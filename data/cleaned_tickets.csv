@@ -6,3 +6,21 @@ I was overcharged on my last bill,Billing Issue,overcharged last bill
 The app keeps crashing when I open it,Technical Issue,app keeps crashing open
 My payment failed but the amount was deducted,Billing Issue,payment failed amount deducted
 Unable to send messages through the app,Technical Issue,unable send messages app
+Payment failed while purchasing plan,Billing Issue,payment failed purchasing plan
+Charged twice for one order,Billing Issue,charged twice one order
+Money deducted but order not placed,Billing Issue,money deducted order placed
+Can't log in to my account,Account Issue,cant log account
+Password reset link not working,Account Issue,password reset link working
+Forgot my password,Account Issue,forgot password
+Internet not working,Network Issue,internet working
+Slow internet speed,Network Issue,slow internet speed
+WiFi disconnects frequently,Network Issue,wifi disconnects frequently
+App crashes after update,Technical Issue,app crashes update
+App not opening,Technical Issue,app opening
+Application freezes during use,Technical Issue,application freezes use
+I can’t access my account, Account Issue,cant access account
+Password reset not working, Account Issue,password reset working
+Forgot my login credentials, Account Issue,forgot login credentials
+My account got locked, Account Issue,account got locked
+I can’t sign in even after reset, Account Issue,cant sign even reset
+computer can't working properly, Technical Issue,computer cant working properly
