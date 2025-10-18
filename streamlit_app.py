@@ -4,8 +4,8 @@ import re
 import numpy as np
 
 # Load model and vectorizer
-model = joblib.load('D:/AI_Ticket_Classifier/AI_Ticket_Classifier/model/ticket_classifier.pkl')
-vectorizer = joblib.load('D:/AI_Ticket_Classifier/AI_Ticket_Classifier/model/tfidf_vectorizer.pkl')
+model = joblib.load('./model/ticket_classifier.pkl')
+vectorizer = joblib.load('./model/tfidf_vectorizer.pkl')
 
 # Text cleaning
 def clean_text(text):
