@@ -5,12 +5,11 @@ import pandas as pd
 import plotly.express as px
 import numpy as np
 import os
-import evaluation
 
 # ------------------- STREAMLIT PAGE CONFIG -------------------
 st.set_page_config(page_title="AI Ticket Classifier", page_icon="🤖", layout="wide")
 
-# Custom CSS for better look
+# ------------------- CUSTOM CSS -------------------
 st.markdown("""
     <style>
     body {
@@ -38,11 +37,25 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ------------------- CACHE MODEL -------------------
+
+import os, requests, joblib
+
+MODEL_PATH = "./model/best_model_day15.pkl"
+MODEL_URL = "https://.../best_model_day15.pkl"  # your hosted file link
+
+if not os.path.exists(MODEL_PATH):
+    # download once
+    r = requests.get(MODEL_URL)
+    with open(MODEL_PATH, "wb") as f:
+        f.write(r.content)
+model = joblib.load(MODEL_PATH)
+
+
+# ------------------- LOAD MODEL -------------------
 @st.cache_resource
 def load_model_and_vectorizer():
-    model = joblib.load('./model/ticket_classifier_optimized.pkl')
-    vectorizer = joblib.load('./model/tfidf_vectorizer_optimized.pkl')
+    model = joblib.load('./model/best_model_day15.pkl')
+    vectorizer = joblib.load('./model/vectorizer_day15.pkl')
     return model, vectorizer
 
 model, vectorizer = load_model_and_vectorizer()
@@ -54,15 +67,28 @@ def load_data():
 
 df = load_data()
 
-# ------------------- TEXT CLEAN FUNCTION -------------------
+# ------------------- CATEGORY MAP -------------------
+category_map = {
+    0: "Login Issues",
+    1: "Payment Problems",
+    2: "Account Suspension",
+    3: "Service Request",
+    4: "Technical Error",
+}
+
+# Convert numeric to readable if needed
+if df['category'].dtype in ['int64', 'float64']:
+    df['category'] = df['category'].map(category_map)
+
+# ------------------- CLEAN TEXT -------------------
 def clean_text(text):
     text = text.lower()
     text = re.sub(r'[^a-z\s]', '', text)
     return text
 
-# ------------------- SIDEBAR -------------------
+# ------------------- SIDEBAR NAV -------------------
 st.sidebar.title("🎯 Navigation")
-page = st.sidebar.radio("Go to", ["🏠 Home", "📊 Dashboard", "ℹ️ About", "📈 Evaluate Model"])
+page = st.sidebar.radio("Go to", ["🏠 Home", "📊 Dashboard", "📈 Evaluate Model", "ℹ️ About"])
 
 # ------------------- HOME PAGE -------------------
 if page == "🏠 Home":
@@ -73,12 +99,23 @@ if page == "🏠 Home":
 
     if st.button("🔍 Predict Category"):
         if user_input.strip():
-            input_tfidf = vectorizer.transform([user_input])
+            input_tfidf = vectorizer.transform([clean_text(user_input)])
             prediction = model.predict(input_tfidf)[0]
-            confidence = np.max(model.predict_proba(input_tfidf)) * 100
 
-            st.success(f"**Predicted Category:** {prediction}")
-            st.info(f"📊 Model Confidence: {confidence:.2f}%")
+            # Convert numeric label to name
+            if isinstance(prediction, (int, np.integer)):
+                category_name = category_map.get(prediction, str(prediction))
+            else:
+                category_name = str(prediction)
+
+            st.success(f"**Predicted Category:** {category_name}")
+
+            # Try to show probability if model supports it
+            if hasattr(model, "predict_proba"):
+                confidence = np.max(model.predict_proba(input_tfidf)) * 100
+                st.info(f"📊 Model Confidence: {confidence:.2f}%")
+            else:
+                st.info("⚠️ This model does not support probability-based confidence display.")
         else:
             st.warning("⚠️ Please enter a complaint first.")
 
@@ -90,7 +127,6 @@ elif page == "📊 Dashboard":
     st.markdown("<h1 class='main-title'>📈 Ticket Data Insights Dashboard</h1>", unsafe_allow_html=True)
     st.markdown("<p class='subtitle'>Interactive visual analytics for support ticket trends</p>", unsafe_allow_html=True)
 
-    # Summary metrics
     total_tickets = len(df)
     num_categories = df['category'].nunique()
     top_category = df['category'].value_counts().idxmax()
@@ -105,13 +141,12 @@ elif page == "📊 Dashboard":
 
     st.markdown("---")
 
-    # Charts
     col4, col5 = st.columns(2)
 
     with col4:
         st.write("### 📊 Category Distribution")
-        category_counts = df['category'].value_counts().reset_index(name='count')
-        category_counts = category_counts.rename(columns={'index': 'category'})
+        category_counts = df['category'].value_counts().reset_index()
+        category_counts.columns = ['category', 'count']
         fig = px.bar(
             category_counts,
             x='category',
@@ -132,13 +167,11 @@ elif page == "📊 Dashboard":
         )
         st.plotly_chart(fig2, use_container_width=True)
 
-# ------------------- Evaluate Model-------------------
+# ------------------- EVALUATE MODEL PAGE -------------------
 elif page == "📈 Evaluate Model":
     st.header("📈 Model Evaluation")
     st.write("Running evaluation on cleaned_tickets.csv ...")
-    # We will reuse the evaluate function but adapt to Streamlit: render Plotly figure inside Streamlit.
-    # Minimal approach: run evaluation.py's logic here (or import a function from evaluation.py that returns metrics+fig).
-    # For now you can run the script externally and show the saved CSV:
+
     if os.path.exists("./model/model_evaluation_report.csv"):
         df_report = pd.read_csv("./model/model_evaluation_report.csv")
         st.table(df_report.T)
@@ -157,13 +190,13 @@ elif page == "ℹ️ About":
     **Model Pipeline:**  
     - 🧹 Text Preprocessing  
     - ✍️ TF-IDF Feature Extraction  
-    - 🤖 Logistic Regression Model  
+    - 🤖 Logistic Regression / SVM / XGBoost  
     - 📈 Accuracy Evaluation  
 
     ---
     📅 **Development Duration:** 20 Days  
     📍 **Status:** ✅ Completed & Functional  
-    💡 **Next Goal:** Model Optimization & Deployment (Day 13)
+    💡 **Next Goal:** Continuous Improvement and Deployment
     """)
 
     st.success("Project ready for demo presentation 🚀")

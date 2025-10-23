@@ -18,9 +18,9 @@ WiFi disconnects frequently,Network Issue,wifi disconnects frequently
 App crashes after update,Technical Issue,app crashes update
 App not opening,Technical Issue,app opening
 Application freezes during use,Technical Issue,application freezes use
-I can’t access my account, Account Issue,cant access account
-Password reset not working, Account Issue,password reset working
-Forgot my login credentials, Account Issue,forgot login credentials
-My account got locked, Account Issue,account got locked
-I can’t sign in even after reset, Account Issue,cant sign even reset
-computer can't working properly, Technical Issue,computer cant working properly
+I can’t access my account,Account Issue,cant access account
+Password reset not working,Account Issue,password reset working
+Forgot my login credentials,Account Issue,forgot login credentials
+My account got locked,Account Issue,account got locked
+I can’t sign in even after reset,Account Issue,cant sign even reset
+computer can't working properly,Technical Issue,computer cant working properly
