@@ -41,7 +41,7 @@ st.markdown("""
 import os, requests, joblib
 
 MODEL_PATH = "./model/best_model_day15.pkl"
-MODEL_URL = "https://.../best_model_day15.pkl"  # your hosted file link
+MODEL_URL = "https://raw.githubusercontent.com/Arjun-murmu/AI_Ticket_Classifier/main/model/best_model_day15.pkl"  # your hosted file link
 
 if not os.path.exists(MODEL_PATH):
     # download once
